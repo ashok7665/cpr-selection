@@ -1,6 +1,8 @@
+from time import sleep
 from smartapi import SmartConnect  # or from
 import pandas as pd
 import numpy as np;
+import time
 
 import pymongo
 from datetime import  date as dateObj
@@ -42,6 +44,7 @@ def calculateCPR(_df):
 
 
 def fetchLastDayData(symbolToken, symbolName):
+    time.sleep(110)
     historicData = obj.ltpData("NSE", symbolName, symbolToken)
     print(historicData['data'])
     if historicData['data'] is None:
