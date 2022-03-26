@@ -44,7 +44,7 @@ def calculateCPR(_df):
 
 
 def fetchLastDayData(symbolToken, symbolName):
-    time.sleep(110)
+    time.sleep(0.15)
     historicData = obj.ltpData("NSE", symbolName, symbolToken)
     print(historicData['data'])
     if historicData['data'] is None:
