@@ -48,7 +48,6 @@ def calculateCPR(_df):
 def fetchLastDayData(symbolToken, symbolName):
     time.sleep(0.15)
     historicData = obj.ltpData("NSE", symbolName, symbolToken)
-    print(historicData['data'])
     if historicData['data'] is None:
         return None
     history_df = pd.DataFrame([historicData['data']])
@@ -67,7 +66,8 @@ def lambda_handler(event, context):
         x = fetchLastDayData(row['symboltoken'], row["tradingsymbol"])
         if x is None:
             continue
-        stock_last_day_data = stock_last_day_data.concat(x)
+        stock_last_day_data = pd.concat([stock_last_day_data, x], axis=1)
+        #stock_last_day_data = stock_last_day_data.concat(x)
 
     stock_last_day_data = cleanData(stock_last_day_data)
     calculateCPR(stock_last_day_data)
