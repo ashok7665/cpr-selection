@@ -6,8 +6,10 @@ import time
 
 import pymongo
 from datetime import  date as dateObj
+import datetime
 
-print('helo')
+
+print('start time {}'.format(datetime.datetime.now()))
 # CONFIGRAION
 CANDLE_PERCENT = 0.05
 STOCK_PRICE = 1000
