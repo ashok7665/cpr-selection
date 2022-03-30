@@ -66,8 +66,7 @@ def lambda_handler(event, context):
         x = fetchLastDayData(row['symboltoken'], row["tradingsymbol"])
         if x is None:
             continue
-        stock_last_day_data = pd.concat([stock_last_day_data, x], axis=1)
-        #stock_last_day_data = stock_last_day_data.concat(x)
+        stock_last_day_data = stock_last_day_data.append(x)
 
     stock_last_day_data = cleanData(stock_last_day_data)
     calculateCPR(stock_last_day_data)
