@@ -16,23 +16,30 @@ STOCK_PRICE = 1000
 CPR_NARROW_PERCENT = 0.0015
 
 # INIT
-myclient = pymongo.MongoClient(
-    "mongodb+srv://admin:admin@cluster0.6ur6q.mongodb.net/msquare?retryWrites=true&w=majority")
-mydb = myclient["msquare"]
-trades = mydb["trades"]
+# myclient = pymongo.MongoClient(
+#     "mongodb+srv://admin:admin@cluster0.6ur6q.mongodb.net/msquare?retryWrites=true&w=majority")
+# mydb = myclient["msquare"]
+# trades = mydb["trades"]
 
 obj = SmartConnect(api_key="TWOFZgdZ")
 data = obj.generateSession("A201547", "Ashok7665@")
 refreshToken = data['data']['refreshToken']
 
 
+# def cleanData(_df):
+#     today = dateObj.today()
+#     # today = dateObj.today()
+#     _df.drop('exchange', axis='columns', inplace=True)
+#     _df.drop('close', axis='columns', inplace=True)
+#     _df['date'] = "{}".format(today)
+#     _df = _df.rename(columns={'ltp': 'close', 'tradingsymbol': 'trading_symbol', 'symboltoken': 'symbol_token'})
+#     return _df
+
 def cleanData(_df):
-    today = dateObj.today()
-    # today = dateObj.today()
-    _df.drop('exchange', axis='columns', inplace=True)
-    _df.drop('close', axis='columns', inplace=True)
-    _df['date'] = "{}".format(today)
-    _df = _df.rename(columns={'ltp': 'close', 'tradingsymbol': 'trading_symbol', 'symboltoken': 'symbol_token'})
+    _df.columns = ['Time', 'ppen', 'high', 'low', 'close', 'Di','trading_symbol','symbol_token']
+    _df.index = _df['Time']
+    _df.drop('Time', axis='columns', inplace=True)
+    _df.drop('Di', axis='columns', inplace=True)
     return _df
 
 
@@ -60,12 +67,31 @@ def fetchLastDayData(symbolToken, symbolName):
 def lambda_handler(event, context):
     # more code here
     main_stock_list = pd.read_csv("./list_fu.csv")
+    main_stock_list = main_stock_list.loc[main_stock_list['close'] > STOCK_PRICE]
     stock_last_day_data = pd.DataFrame()
+    
 
     for date, row in main_stock_list.T.iteritems():
-        x = fetchLastDayData(row['symboltoken'], row["tradingsymbol"])
-        if x is None:
-            continue
+        historicParam = {
+        "exchange": "NSE",
+        "symboltoken": str(row['symboltoken']),
+        "interval": "ONE_DAY",
+        "fromdate": "2022-04-20 09:15",
+        "todate": "2022-04-21 03:15"
+        }
+        time.sleep(.3)
+        historicData = obj.getCandleData(historicParam)
+        if historicData['data'] is None:
+            continue;
+        x = pd.DataFrame(historicData['data'])
+        x['trading_symbol'] = row['tradingsymbol'];
+        x['symbol_token'] = row['symboltoken']
+
+        print(x)
+    
+        # x = fetchLastDayData(row['symboltoken'], row["tradingsymbol"])
+        # if x is None:
+        #     continue
         stock_last_day_data = stock_last_day_data.append(x)
 
     stock_last_day_data = cleanData(stock_last_day_data)
@@ -78,18 +104,13 @@ def lambda_handler(event, context):
         trades_row.append({
             'trading_symbol': d['trading_symbol'],
             'symbol_token': d['symbol_token'],
-            'date': d['date'],
+            'date': '2022-04-22',
             'status': 'cpr_selected'
         })
 
     print('SELECTED STOCKS ')
     print(trades_row)
-    trades.insert_many(trades_row)
-
-    return {
-        "status": 200,
-        "body" : "Hello from Lambda!",
-    }
+    #trades.insert_many(trades_row)
 
 
 
