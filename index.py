@@ -60,6 +60,8 @@ def fetchLastDayData(symbolToken, symbolName):
 def lambda_handler(event, context):
     # more code here
     main_stock_list = pd.read_csv("./list_fu.csv")
+    main_stock_list = main_stock_list.loc[main_stock_list['close'] > STOCK_PRICE]
+
     stock_last_day_data = pd.DataFrame()
 
     for date, row in main_stock_list.T.iteritems():
@@ -85,11 +87,6 @@ def lambda_handler(event, context):
     print('SELECTED STOCKS ')
     print(trades_row)
     trades.insert_many(trades_row)
-
-    return {
-        "status": 200,
-        "body" : "Hello from Lambda!",
-    }
 
 
 
