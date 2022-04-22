@@ -16,10 +16,10 @@ STOCK_PRICE = 1000
 CPR_NARROW_PERCENT = 0.0015
 
 # INIT
-# myclient = pymongo.MongoClient(
-#     "mongodb+srv://admin:admin@cluster0.6ur6q.mongodb.net/msquare?retryWrites=true&w=majority")
-# mydb = myclient["msquare"]
-# trades = mydb["trades"]
+myclient = pymongo.MongoClient(
+    "mongodb+srv://admin:admin@cluster0.6ur6q.mongodb.net/msquare?retryWrites=true&w=majority")
+mydb = myclient["msquare"]
+trades = mydb["trades"]
 
 obj = SmartConnect(api_key="TWOFZgdZ")
 data = obj.generateSession("A201547", "Ashok7665@")
@@ -110,7 +110,7 @@ def lambda_handler(event, context):
 
     print('SELECTED STOCKS ')
     print(trades_row)
-    #trades.insert_many(trades_row)
+    trades.insert_many(trades_row)
 
 
 
