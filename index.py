@@ -103,7 +103,7 @@ def lambda_handler(event, context):
     for d in dict:
         trades_row.append({
             'trading_symbol': d['trading_symbol'],
-            'symbol_token': d['symbol_token'],
+            'symbol_token': str(d['symbol_token']),
             'date': '2022-04-22',
             'status': 'cpr_selected'
         })
