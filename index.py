@@ -12,7 +12,7 @@ import datetime
 print('start time {}'.format(datetime.datetime.now()))
 # CONFIGRAION
 CANDLE_PERCENT = 0.05
-STOCK_PRICE = 1000
+STOCK_PRICE = 500
 CPR_NARROW_PERCENT = 0.0015
 
 # INIT
