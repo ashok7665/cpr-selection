@@ -76,6 +76,8 @@ def lambda_handler(event, context):
     dict = cpr_selected_trades.to_dict('records')
 
     trades_row = []
+
+    
     for d in dict:
         trades_row.append({
             'trading_symbol': d['trading_symbol'],
@@ -86,7 +88,7 @@ def lambda_handler(event, context):
 
     print('SELECTED STOCKS ')
     print(trades_row)
-    trades.insert_many(trades_row)
+    #trades.insert_many(trades_row)
 
 
 
