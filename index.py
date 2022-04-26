@@ -88,7 +88,7 @@ def lambda_handler(event, context):
 
     print('SELECTED STOCKS ')
     print(trades_row)
-    #trades.insert_many(trades_row)
+    trades.insert_many(trades_row)
 
 
 
