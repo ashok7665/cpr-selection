@@ -60,7 +60,6 @@ def fetchLastDayData(symbolToken, symbolName):
 def lambda_handler(event, context):
     # more code here
     main_stock_list = pd.read_csv("./list_fu.csv")
-    main_stock_list = main_stock_list.loc[main_stock_list['close'] > STOCK_PRICE]
 
     stock_last_day_data = pd.DataFrame()
 
