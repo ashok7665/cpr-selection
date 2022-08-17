@@ -21,12 +21,15 @@ myclient = pymongo.MongoClient(
 mydb = myclient["msquare"]
 trades = mydb["trades"]
 
-obj = SmartConnect(api_key="TWOFZgdZ")
-data = obj.generateSession("A201547", "Ashok7665@")
+obj = SmartConnect(api_key="ilgUlOtU")
+data = obj.generateSession("P246447", "Jangir76@")
 refreshToken = data['data']['refreshToken']
+print(refreshToken)
+print(data)
 
 
 def cleanData(_df):
+    print(_df)
     today = dateObj.today()
     # today = dateObj.today()
     _df.drop('exchange', axis='columns', inplace=True)
@@ -90,5 +93,8 @@ def lambda_handler(event, context):
     trades.insert_many(trades_row)
 
 
+try:
+    lambda_handler('test','test')
+except Exception as e:
+    print('ERROR ----->>>>> : ',e)
 
-lambda_handler('test','test')
